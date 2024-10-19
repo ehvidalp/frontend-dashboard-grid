@@ -2,9 +2,10 @@
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-blue-600">¡Hola, Tailwind CSS!</h1>
-  </div>
+    <>
+      <section className="bg-pokeball bg-no-repeat bg-left-top bg-fixed">
+      </section>
+    </>
   )
 }
 
