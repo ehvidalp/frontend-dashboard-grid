@@ -1,12 +1,25 @@
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import {
+  getPokemons,
+  } from '../dataDashboardSlice';
+import DashboardGrid from '../components/DashboardGrid';
 
+const Dashboard: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.pokemon.status);
 
-const Dashboard = () => {
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(getPokemons());
+    }
+  }, [status, dispatch]);
+
   return (
-    <>
-      <section className="bg-pokeball bg-no-repeat bg-left-top bg-fixed">
-      </section>
-    </>
-  )
-}
+    <div>
+      <DashboardGrid />
+    </div>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
