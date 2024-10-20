@@ -13,8 +13,8 @@ class HttpClient implements ApiClient {
     });
   }
 
-  async get<T>(url: string, options?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse<T> = await this.client.get(url, options);
+  async get<T>(url?: string, options?: AxiosRequestConfig): Promise<T> {
+    const response: AxiosResponse<T> = await this.client.get(url || '', options);
     return response.data;
   }
 

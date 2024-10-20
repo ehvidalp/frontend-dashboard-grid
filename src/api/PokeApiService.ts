@@ -1,16 +1,25 @@
-import { ApiClient } from "../types";
-import apiClient from "./ApiClient";
-
+import HttpClient from "./HttpApiClient";
 class PokeApiService {
-    private apiPokeClient: ApiClient;
+    private apiPokeClient: HttpClient;
     
     constructor() {
-        this.apiPokeClient = apiClient;
+        this.apiPokeClient = new HttpClient();
     }
 
-    async getPokemons(limit: number = 150, offset: number = 0) {
+    async getPartialPokemons(limit: number = 150, offset: number = 0) {
         try {
             const response = await this.apiPokeClient.get(`/pokemon?limit=${limit}&offset=${offset}`);
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    async getDetailsPokemonFromUrl(url: string) {
+        try {
+            const customApiPokeClient = new HttpClient(url);
+            const response = await customApiPokeClient.get();
             return response;
         } catch (error) {
             console.error(error);

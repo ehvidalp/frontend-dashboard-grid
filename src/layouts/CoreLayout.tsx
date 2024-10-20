@@ -9,7 +9,7 @@ const CoreLayout: FC<CoreLayoutProps> = ({ children }) => {
     <>
       {/* <header>
       </header> */}
-      <main className="flex flex-col w-full h-full bg-neutral-950 relative">
+      <main className="flex flex-col w-full h-full relative">
         {children}
       </main>
 
