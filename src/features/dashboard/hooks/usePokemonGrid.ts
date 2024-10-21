@@ -1,6 +1,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { fetchAndRemovePartialPokemons, addToCombat, removeFromCombat, selectAllPokemons } from "../dataDashboardSlice";
+import { Pokemon } from '../types';
+
+const MAX_COMBAT_POKEMONS = 6;
 
 export const usePokemonGrid = () => {
   const dispatch = useAppDispatch();
@@ -10,9 +13,8 @@ export const usePokemonGrid = () => {
   const [visibleCount, setVisibleCount] = useState(10);
   const hasFetchedInitial = useRef(false); 
 
-  // Cargar los primeros Pokémon al montar
   useEffect(() => {
-    if (!hasFetchedInitial.current && pokemons.length === 0 && status !== 'loading') {
+    if (!hasFetchedInitial.current && pokemons.length === 0 && status !== 'loading-details') {
       dispatch(fetchAndRemovePartialPokemons(10));
       hasFetchedInitial.current = true;
     }
@@ -25,11 +27,15 @@ export const usePokemonGrid = () => {
     }
   }, [dispatch, status]);
 
-  const toggleCombat = (pokemonName: string) => {
-    if (combatPokemons.includes(pokemonName)) {
-      dispatch(removeFromCombat(pokemonName));
-    } else {
-      dispatch(addToCombat(pokemonName));
+  const toggleCombat = (pokemon: Pokemon) => {
+    const isInCombat = combatPokemons.some((p) => p.name === pokemon.name);
+    if (isInCombat) {
+      dispatch(removeFromCombat(pokemon));
+      return;
+    }
+    
+    if (combatPokemons.length < MAX_COMBAT_POKEMONS) {
+      dispatch(addToCombat(pokemon));
     }
   };
 
@@ -40,5 +46,6 @@ export const usePokemonGrid = () => {
     visibleCount,
     loadMorePokemons,
     toggleCombat,
+    remainingPokemons: MAX_COMBAT_POKEMONS - combatPokemons.length,
   };
 };

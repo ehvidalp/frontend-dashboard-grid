@@ -13,19 +13,19 @@ const AnimatedToggle: FC<AnimatedToggleProps> = ({
   className,
 }) => {
   return (
-    <div className={`relative w-full mt-4 rounded-md border h-10 p-1 bg-gray-200 ${className}`}>
-      <div className="relative w-full h-full flex items-cente font-roboto-mono">
+    <div className={`relative w-full mt-4 rounded-md border h-10 p-1 bg-zinc-200 ${className}`}>
+      <div className="relative w-full h-full flex items-cente font-roboto-mono text-sm">
         <div
           onClick={handleToggle}
           className="w-full flex justify-center text-gray-400 cursor-pointer"
         >
-          <button>Eliminar</button>
+          <button>Remove</button>
         </div>
         <div
           onClick={handleToggle}
-          className="w-full flex justify-center text-gray-400 cursor-pointer"
+          className="w-full flex justify-center text-gray-500 cursor-pointer"
         >
-          <button>Agregar</button>
+          <button>Add</button>
         </div>
       </div>
 
@@ -37,8 +37,6 @@ const AnimatedToggle: FC<AnimatedToggleProps> = ({
         }`}
       >
         <img className="w-4 h-4 object-contain" src={pokeballIcon} alt="pokeball" />
-        {/* <img src={pokeballIcon} alt="pokeball" /> */}
-        {/* {isSelected ? "I'm Selected" : "'cause I'm better!"} */}
       </span>
     </div>
   );

@@ -16,7 +16,7 @@ export interface PokemonResponse {
 
 export interface PokemonState {
     pokemons: Pokemon[];
-    combatPokemons: string[];
+    combatPokemons: Pokemon[];
     partialPokemons: Pokemon[];
     totalPokemons: number;
     offset: number;

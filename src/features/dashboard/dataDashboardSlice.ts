@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { PokemonState, PokemonResponse, Pokemon } from './types';
@@ -48,20 +47,19 @@ const pokemonSlice = createSlice({
     name: 'pokemon',
     initialState,
     reducers: {
-        addToCombat: (state, action: PayloadAction<string>) => {
-            if (!state.combatPokemons.includes(action.payload)) {
+        addToCombat: (state, action: PayloadAction<Pokemon>) => {
+            if (!state.combatPokemons.some(pokemon => pokemon.name === action.payload.name)) {
                 state.combatPokemons.push(action.payload);
             }
         },
-        removeFromCombat: (state, action: PayloadAction<string>) => {
+        removeFromCombat: (state, action: PayloadAction<Pokemon>) => {
             state.combatPokemons = state.combatPokemons.filter(
-                (name) => name !== action.payload
+                (pokemon) => pokemon.name !== action.payload.name
             );
         },
         removePartialPokemons: (state, action: PayloadAction<number>) => {
             state.partialPokemons = state.partialPokemons.slice(action.payload);
         },
-        
     },
     extraReducers: (builder) => {
         builder
@@ -92,7 +90,7 @@ export const selectPartialPokemons = (state: RootState) => state.pokemon.partial
 
 export const selectIsPokemonInCombat = createSelector(
     [selectCombatPokemons, (_: RootState, name: string) => name],
-    (combatPokemons, name) => combatPokemons.includes(name)
+    (combatPokemons, name) => combatPokemons.some(pokemon => pokemon.name === name)
 );
 
 export default pokemonSlice.reducer;

@@ -1,16 +1,20 @@
-
 import { usePokemonGrid } from "../hooks/usePokemonGrid";
 import { useIntersectionObserver } from "../../../hooks/useIntersectionObserver";
 import PokemonCard from "../../ui/SquareCard/PokemonCard";
 
-const DashboardGrid = () => {
+interface DashboardGridProps {
+  className?: string;
+}
+
+const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
   const {
     pokemons,
     combatPokemons,
     status,
     visibleCount,
     loadMorePokemons,
-    toggleCombat
+    toggleCombat,
+    remainingPokemons
   } = usePokemonGrid();
 
   const { observe } = useIntersectionObserver((entries) => {
@@ -21,13 +25,19 @@ const DashboardGrid = () => {
   });
 
   return (
-    <section className="container mx-auto p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <section className={`container mx-auto overflow-auto h-ful px-6 ${className}`}>
+      <h1 className="sticky top-0 z-50 bg-zinc-950 text-4xl font-bold font-roboto-mono text-zinc-50 pb-4 pt-16">
+        {remainingPokemons > 0
+          ? `Select ${remainingPokemons} Pokémon to battle`
+          : "You have selected 6 Pokémon"}
+      </h1>
+      
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {status === "loading" && <p>Loading...</p>}
         {status === "failed" && <p>Failed to load data</p>}
 
         {pokemons.slice(0, visibleCount).map((pokemon, index) => {
-          const isInCombat = combatPokemons.includes(pokemon.name);
+          const isInCombat = combatPokemons.some((p) => p.name === pokemon.name);
           return (
             <div
               key={pokemon.name}
@@ -36,7 +46,8 @@ const DashboardGrid = () => {
               <PokemonCard
                 pokemon={pokemon}
                 isInCombat={isInCombat}
-                handleToggleCombat={() => toggleCombat(pokemon.name)}
+                showBorder={true}
+                handleToggleCombat={() => toggleCombat(pokemon)}
               />
             </div>
           );

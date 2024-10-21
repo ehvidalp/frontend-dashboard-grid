@@ -5,19 +5,21 @@ import AnimatedToggle from "../AnimatedToggle/AnimatedToggle";
 interface PokemonCardProps {
   pokemon: Pokemon;
   isInCombat: boolean;
+  showBorder?: boolean;
   handleToggleCombat: () => void;
 }
 
 const PokemonCard: FC<PokemonCardProps> = ({
   pokemon,
   isInCombat,
+  showBorder = false,
   handleToggleCombat,
 }) => {
   console.log("pokemon", pokemon);
   return (
     <div
       className={`group w-full h-48 relative flex flex-col rounded-lg bg-zinc-800 cursor-pointer transform transition-transform duration-200 hover:scale-105 overflow-hidden md:max-w-64 ${
-        isInCombat ? "border-2 border-red-500" : ""
+        isInCombat && showBorder ? "border-2 border-red-500" : ""
       }`}
     >
       <picture className="w-full h-5/6 group-hover:scale-125 group-hover:-translate-y-1 z-0">
