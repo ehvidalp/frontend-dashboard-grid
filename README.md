@@ -50,3 +50,14 @@ Make sure you have the following tools installed:
 1. **Clone the repository** to your local machine:
    ```bash
    git clone https://github.com/your-username/frontend-dashboard-grid.git
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```

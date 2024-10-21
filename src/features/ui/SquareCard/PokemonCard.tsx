@@ -33,7 +33,7 @@ const PokemonCard: FC<PokemonCardProps> = ({
         isInCombat && showBorder ? "border-2 border-red-500" : ""
       }`}
     >
-      <picture className="w-full h-5/6 group-hover:scale-125 group-hover:-translate-y-1 z-0">
+      <picture className="w-full h-5/6 group-hover:scale-125 group-hover:-translate-y-1 transition-all duration-300 ease-in-out">
         <img
           className="w-full h-full object-contain"
           src={pokemon.sprites.other.home.front_default}
@@ -48,7 +48,7 @@ const PokemonCard: FC<PokemonCardProps> = ({
       <AnimatedToggle
         isSelected={isInCombat}
         handleToggle={handleToggleClick}
-        className="-mt-10 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        className="-mt-12 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
       />
     </div>
   );
