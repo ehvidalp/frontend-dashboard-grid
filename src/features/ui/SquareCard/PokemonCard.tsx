@@ -48,7 +48,7 @@ const PokemonCard: FC<PokemonCardProps> = ({
       <AnimatedToggle
         isSelected={isInCombat}
         handleToggle={handleToggleClick}
-        className="z-10 px-4 opacity-100 group-hover:opacity-100 transition-opacity duration-200 group-hover:-mt-12"
+        className="z-10 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 group-hover:-mt-12"
       />
     </div>
   );
