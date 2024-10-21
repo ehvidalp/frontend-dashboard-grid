@@ -24,7 +24,7 @@ const ItemDescription = () => {
       navigate("/");
     } else {
       setSelectedPokemon(pokemon);
-      setIsSelected(combatPokemons.some((p) => p.id === pokemon.id));
+      setIsSelected(combatPokemons.some((p) => p.id === pokemon.id)); // Verificamos si está en combate
     }
   }, [pokemon, navigate, combatPokemons]);
 
@@ -45,6 +45,8 @@ const ItemDescription = () => {
 
   return (
     <section className="grid grid-rows-[auto_1fr] grid-cols-[65%_35%] h-screen">
+      
+      
       <div className="flex flex-col items-center justify-center w-full h-full">
         <picture>
           <img src={selectedPokemon.sprites.other.home.front_default} alt={selectedPokemon.name} />

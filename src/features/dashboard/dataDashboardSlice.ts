@@ -77,7 +77,7 @@ const pokemonSlice = createSlice({
             state.partialPokemons = state.partialPokemons.slice(action.payload);
         },
         setSearchTerm: (state, action: PayloadAction<string>) => {
-            state.searchTerm = action.payload; 
+            state.searchTerm = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -99,8 +99,14 @@ const pokemonSlice = createSlice({
             })
             .addCase(fetchAndRemovePartialPokemons.rejected, handleFetchPokemonsError)
             .addCase(searchPokemonByName.fulfilled, (state, action: PayloadAction<unknown>) => {
+                const pokemonFromSearch = action.payload as Pokemon;
                 state.status = 'succeeded';
-                state.searchResults = [action.payload as Pokemon];
+                state.searchResults = [pokemonFromSearch];
+
+                const existsInPokemons = state.pokemons.some(pokemon => pokemon.name === pokemonFromSearch.name);
+                if (!existsInPokemons) {
+                    state.pokemons.push(pokemonFromSearch);
+                }
             })
             .addCase(searchPokemonByName.rejected, handleFetchPokemonsError);
     },
