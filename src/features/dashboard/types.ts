@@ -1,11 +1,27 @@
 export interface Pokemon {
+    id: number;
     name: string;
     url: string;
-    sprites: {
-        back_default: string;
-        back_shiny: string;
-        front_default: string;
-        front_shiny: string;
+    sprites: PokemonSprite;
+    types: PokemonType[];
+    stats: PokemonStat[];
+}
+
+export interface PokemonType {
+    name: string;
+}
+
+export interface PokemonStat {
+    base_stat: number;
+    stat: {
+        name: string;
+    }
+}
+export interface PokemonSprite {
+    other: {
+        home: {
+            front_default: string;
+        }
     }
 }
 

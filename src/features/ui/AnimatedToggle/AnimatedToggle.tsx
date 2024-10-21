@@ -2,7 +2,7 @@ import { FC } from "react";
 import pokeballIcon from '../../../assets/images/pokeball.png'
 
 interface AnimatedToggleProps {
-  handleToggle: () => void;
+  handleToggle: (e: React.MouseEvent) => void;
   isSelected: boolean;
   className?: string;
 }
