@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 import { usePokemonGrid } from "../hooks/usePokemonGrid";
-import { setSearchTerm, selectFilteredPokemons, selectPartialPokemons } from "../dataDashboardSlice";
+import { searchPokemonByName, selectSearchResults, selectFilteredPokemons, selectPartialPokemons } from "../dataDashboardSlice";
 import PokemonCard from "../../ui/SquareCard/PokemonCard";
 import SquareSearch from "../../ui/SquareSearch/SquareSearch";
+import { useDebounce } from '../../../hooks/useDebounce';
 
 interface DashboardGridProps {
   className?: string;
@@ -11,7 +12,9 @@ interface DashboardGridProps {
 
 const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
   const dispatch = useAppDispatch();
-  
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
   const {
     combatPokemons,
     status,
@@ -22,7 +25,8 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
   } = usePokemonGrid();
 
   const pokemons = useAppSelector(selectFilteredPokemons);
-  const partialPokemons = useAppSelector(selectPartialPokemons); 
+  const searchResults = useAppSelector(selectSearchResults); 
+  const partialPokemons = useAppSelector(selectPartialPokemons);
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const scrollPositionRef = useRef<number>(0);
@@ -41,14 +45,22 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
   }, []);
 
   useEffect(() => {
-    if (pokemons.length === 0 && partialPokemons.length > 0) {
+    if (!debouncedSearchTerm && pokemons.length === 0 && partialPokemons.length > 0 && status !== 'loading') {
       loadMorePokemons();
     }
-  }, [pokemons.length, partialPokemons.length, loadMorePokemons]);
+  }, [pokemons.length, partialPokemons.length, loadMorePokemons, debouncedSearchTerm, status]);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      dispatch(searchPokemonByName(debouncedSearchTerm));
+    }
+  }, [debouncedSearchTerm, dispatch]);
 
   const handleSearch = (searchValue: string) => {
-    dispatch(setSearchTerm(searchValue)); 
+    setSearchTerm(searchValue);
   };
+
+  const displayPokemons = debouncedSearchTerm ? searchResults : pokemons;
 
   return (
     <section
@@ -61,13 +73,17 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
           : "You have selected 6 Pokémon"}
       </h1>
       
-      <SquareSearch onSearchChange={handleSearch} /> 
+      <SquareSearch onSearchChange={handleSearch} />
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {status === "loading" && <p>Loading...</p>}
         {status === "failed" && <p>Failed to load data</p>}
 
-        {pokemons.slice(0, visibleCount).map((pokemon) => {
+        {debouncedSearchTerm && searchResults.length === 0 && (
+          <p className="text-center text-red-500 mt-4">No Pokémon found for "{debouncedSearchTerm}"</p>
+        )}
+
+        {displayPokemons.slice(0, visibleCount).map((pokemon) => {
           const isInCombat = combatPokemons.some((p) => p.name === pokemon.name);
           return (
             <div key={pokemon.name}>
@@ -83,18 +99,18 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
         })}
       </div>
 
-      {partialPokemons.length > 0 && status !== "loading-details" && (
+      {partialPokemons.length > 0 && status !== "loading-details" && !debouncedSearchTerm && (
         <div className="text-center mt-4">
           <button
             className="w-full bg-zinc-400 text-white py-2 px-4 rounded hover:bg-red-500 font-roboto-mono"
-            onClick={loadMorePokemons} 
+            onClick={loadMorePokemons}
           >
             Load More
           </button>
         </div>
       )}
 
-      {pokemons.length >= 150 && (
+      {pokemons.length >= 150 && !debouncedSearchTerm && (
         <p className="text-center text-green-500 mt-4">All 150 Pokémon have been loaded!</p>
       )}
     </section>

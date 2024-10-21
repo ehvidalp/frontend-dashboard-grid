@@ -31,6 +31,19 @@ export const fetchAndRemovePartialPokemons = createAsyncThunk(
     }
 );
 
+export const searchPokemonByName = createAsyncThunk(
+    'pokemon/searchPokemonByName',
+    async (name: string) => {
+        try {
+            const result = await PokeApiService.searchPokemon(name);
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Pokemon not found");
+        }
+    }
+);
+
 const handleFetchPokemonsError = (state: PokemonState) => {
     state.status = 'failed';
 };
@@ -43,6 +56,7 @@ const initialState: PokemonState = {
     offset: 0,
     status: 'idle',
     searchTerm: '',
+    searchResults: [],
 };
 
 const pokemonSlice = createSlice({
@@ -83,7 +97,12 @@ const pokemonSlice = createSlice({
                 state.status = 'succeeded';
                 state.pokemons = [...state.pokemons, ...action.payload as Pokemon[]];
             })
-            .addCase(fetchAndRemovePartialPokemons.rejected, handleFetchPokemonsError);
+            .addCase(fetchAndRemovePartialPokemons.rejected, handleFetchPokemonsError)
+            .addCase(searchPokemonByName.fulfilled, (state, action: PayloadAction<unknown>) => {
+                state.status = 'succeeded';
+                state.searchResults = [action.payload as Pokemon];
+            })
+            .addCase(searchPokemonByName.rejected, handleFetchPokemonsError);
     },
 });
 
@@ -93,6 +112,7 @@ export const selectAllPokemons = (state: RootState) => state.pokemon.pokemons;
 export const selectCombatPokemons = (state: RootState) => state.pokemon.combatPokemons;
 export const selectPartialPokemons = (state: RootState) => state.pokemon.partialPokemons;
 export const selectSearchTerm = (state: RootState) => state.pokemon.searchTerm;
+export const selectSearchResults = (state: RootState) => state.pokemon.searchResults;
 
 export const selectFilteredPokemons = createSelector(
     [selectAllPokemons, selectSearchTerm],

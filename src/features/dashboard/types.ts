@@ -38,4 +38,5 @@ export interface PokemonState {
     offset: number;
     status: 'idle' | 'loading' | 'succeeded' | 'failed' | 'loading-details';
     searchTerm: string;
+    searchResults: Pokemon[];
 }
