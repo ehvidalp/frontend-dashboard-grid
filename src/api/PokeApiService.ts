@@ -26,6 +26,16 @@ class PokeApiService {
             throw error;
         }
     }
+
+    async searchPokemon(name: string) {
+        try {
+            const response = await this.apiPokeClient.get(`/pokemon/${name}`);
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }
 
 export default new PokeApiService();

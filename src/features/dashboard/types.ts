@@ -37,4 +37,5 @@ export interface PokemonState {
     totalPokemons: number;
     offset: number;
     status: 'idle' | 'loading' | 'succeeded' | 'failed' | 'loading-details';
+    searchTerm: string;
 }

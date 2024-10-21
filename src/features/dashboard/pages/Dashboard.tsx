@@ -28,8 +28,8 @@ const Dashboard: React.FC = () => {
   if (status === "failed") {
     return <p>Failed to load data</p>;
   }
-
-  if (partialPokemons.length === 0) {
+  // console.log(partialPokemons.length);
+  if (partialPokemons.length < 0) {
     return <p>No Pokémon available</p>;
   }
 

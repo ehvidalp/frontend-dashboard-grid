@@ -8,11 +8,10 @@ const ADD_POKEMONS_COUNT = 15;
 
 export const usePokemonGrid = () => {
   const dispatch = useAppDispatch();
-  const pokemons = useAppSelector(selectAllPokemons); // Pokémon en la store
-  const combatPokemons = useAppSelector((state) => state.pokemon.combatPokemons); // Pokémon en combate
-  const status = useAppSelector((state) => state.pokemon.status); // Estado de la carga
+  const pokemons = useAppSelector(selectAllPokemons); 
+  const combatPokemons = useAppSelector((state) => state.pokemon.combatPokemons); 
+  const status = useAppSelector((state) => state.pokemon.status);
 
-  // Si hay Pokémon en la store, mostrar todos. Si no, mostrar 10.
   const [visibleCount, setVisibleCount] = useState(() => {
     return pokemons.length > 0 ? pokemons.length : ADD_POKEMONS_COUNT;
   });
@@ -20,9 +19,8 @@ export const usePokemonGrid = () => {
   const hasFetchedInitial = useRef(false); 
 
   useEffect(() => {
-    // Si no hay Pokémon en la store, hacer el fetch inicial
     if (!hasFetchedInitial.current && pokemons.length === 0 && status !== 'loading-details') {
-      dispatch(fetchAndRemovePartialPokemons(ADD_POKEMONS_COUNT)); // Cargar los primeros 10 Pokémon
+      dispatch(fetchAndRemovePartialPokemons(ADD_POKEMONS_COUNT)); 
       hasFetchedInitial.current = true;
     }
   }, [dispatch, pokemons.length, status]);
@@ -30,19 +28,20 @@ export const usePokemonGrid = () => {
   const loadMorePokemons = useCallback(() => {
     if (status === 'succeeded') {
       setVisibleCount((prevCount) => prevCount + ADD_POKEMONS_COUNT);
-      dispatch(fetchAndRemovePartialPokemons(ADD_POKEMONS_COUNT)); // Cargar más Pokémon si es necesario
+      
+      dispatch(fetchAndRemovePartialPokemons(ADD_POKEMONS_COUNT)); 
     }
   }, [dispatch, status]);
 
   const toggleCombat = (pokemon: Pokemon) => {
     const isInCombat = combatPokemons.some((p) => p.name === pokemon.name);
     if (isInCombat) {
-      dispatch(removeFromCombat(pokemon)); // Remover de combate
+      dispatch(removeFromCombat(pokemon)); 
       return;
     }
     
     if (combatPokemons.length < MAX_COMBAT_POKEMONS) {
-      dispatch(addToCombat(pokemon)); // Añadir a combate
+      dispatch(addToCombat(pokemon)); 
     }
   };
 
@@ -50,9 +49,9 @@ export const usePokemonGrid = () => {
     pokemons,
     combatPokemons,
     status,
-    visibleCount, // Muestra los Pokémon visibles
-    loadMorePokemons, // Cargar más Pokémon cuando sea necesario
-    toggleCombat, // Agregar o remover Pokémon del combate
-    remainingPokemons: MAX_COMBAT_POKEMONS - combatPokemons.length, // Contador de Pokémon restantes para combate
+    visibleCount,
+    loadMorePokemons,
+    toggleCombat,
+    remainingPokemons: MAX_COMBAT_POKEMONS - combatPokemons.length,
   };
 };

@@ -23,8 +23,9 @@ export const fetchAndRemovePartialPokemons = createAsyncThunk(
         const state = getState() as RootState;
         const details = await getPokemonDetails(state.pokemon.partialPokemons, count);
 
-        // Dispatch an action to remove the processed partial pokemons
-        dispatch(removePartialPokemons(count));
+        if (state.pokemon.partialPokemons.length > 0) {
+            dispatch(removePartialPokemons(count));
+        }
 
         return details;
     }
@@ -41,6 +42,7 @@ const initialState: PokemonState = {
     totalPokemons: 0,
     offset: 0,
     status: 'idle',
+    searchTerm: '',
 };
 
 const pokemonSlice = createSlice({
@@ -60,6 +62,9 @@ const pokemonSlice = createSlice({
         removePartialPokemons: (state, action: PayloadAction<number>) => {
             state.partialPokemons = state.partialPokemons.slice(action.payload);
         },
+        setSearchTerm: (state, action: PayloadAction<string>) => {
+            state.searchTerm = action.payload; 
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -76,17 +81,28 @@ const pokemonSlice = createSlice({
             })
             .addCase(fetchAndRemovePartialPokemons.fulfilled, (state, action: PayloadAction<unknown[]>) => {
                 state.status = 'succeeded';
-                state.pokemons = [...state.pokemons, ...(action.payload as Pokemon[])];
+                state.pokemons = [...state.pokemons, ...action.payload as Pokemon[]];
             })
             .addCase(fetchAndRemovePartialPokemons.rejected, handleFetchPokemonsError);
     },
 });
 
-export const { addToCombat, removeFromCombat, removePartialPokemons } = pokemonSlice.actions;
+export const { addToCombat, removeFromCombat, removePartialPokemons, setSearchTerm } = pokemonSlice.actions;
 
 export const selectAllPokemons = (state: RootState) => state.pokemon.pokemons;
 export const selectCombatPokemons = (state: RootState) => state.pokemon.combatPokemons;
 export const selectPartialPokemons = (state: RootState) => state.pokemon.partialPokemons;
+export const selectSearchTerm = (state: RootState) => state.pokemon.searchTerm;
+
+export const selectFilteredPokemons = createSelector(
+    [selectAllPokemons, selectSearchTerm],
+    (pokemons, searchTerm) => {
+        if (!searchTerm) return pokemons;
+        return pokemons.filter((pokemon) =>
+            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+);
 
 export const selectIsPokemonInCombat = createSelector(
     [selectCombatPokemons, (_: RootState, name: string) => name],
