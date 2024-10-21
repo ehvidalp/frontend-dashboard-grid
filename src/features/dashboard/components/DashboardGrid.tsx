@@ -74,6 +74,7 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
               <PokemonCard
                 pokemon={pokemon}
                 isInCombat={isInCombat}
+                enableNavigation={true}
                 showBorder={true}
                 handleToggleCombat={() => toggleCombat(pokemon)}
               />

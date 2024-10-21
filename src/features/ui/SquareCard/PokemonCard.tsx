@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Pokemon } from "../../dashboard/types";
 import AnimatedToggle from "../AnimatedToggle/AnimatedToggle";
 
@@ -8,6 +8,7 @@ interface PokemonCardProps {
   isInCombat: boolean;
   showBorder?: boolean;
   handleToggleCombat: () => void;
+  enableNavigation?: boolean;
 }
 
 const PokemonCard: FC<PokemonCardProps> = ({
@@ -15,10 +16,17 @@ const PokemonCard: FC<PokemonCardProps> = ({
   isInCombat,
   showBorder = false,
   handleToggleCombat,
+  enableNavigation = true,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const handleCardClick = () => {
-    navigate(`/pokemon/${pokemon.id}`);
+    const targetUrl = `/pokemon/${pokemon.id}`;
+
+    if (enableNavigation && location.pathname !== targetUrl) {
+      navigate(targetUrl);
+    }
   };
 
   const handleToggleClick = (e: React.MouseEvent) => {
