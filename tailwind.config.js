@@ -8,6 +8,10 @@ export default {
       backgroundImage: {
         'pokeball': "url('src/assets/pokeball.svg')",
       },
+      fontFamily: {
+        'roboto-mono': ['Roboto Mono', 'monospace'],
+        'clash': ['"Clash Display"', 'sans-serif'],
+      },
     },
   },
   plugins: [],

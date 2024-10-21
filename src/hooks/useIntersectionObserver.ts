@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 export const useIntersectionObserver = (
   callback: IntersectionObserverCallback,
-  options: IntersectionObserverInit = { root: null, rootMargin: '0px', threshold: 0.5 }
+  options: IntersectionObserverInit = { root: null, rootMargin: '0px', threshold: 0.1 }
 ) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
