@@ -25,18 +25,14 @@ const Dashboard: React.FC = () => {
     return <p>Loading...</p>;
   }
 
-  if (status === "failed") {
-    return <p>Failed to load data</p>;
-  }
-  // console.log(partialPokemons.length);
   if (partialPokemons.length < 0) {
     return <p>No Pokémon available</p>;
   }
 
   return (
-    <section className="grid grid-rows-[auto_1fr] grid-cols-[65%_35%] h-screen">
+    <section className="grid grid-rows-[auto_1fr] grid-cols-[65%_35%]">
       <DashboardGrid className="overflow-auto" />
-      <DashboardItemsSelected className="overflow-auto" />
+      <DashboardItemsSelected className="overflow-hidden h-screen sticky top-0 " />
     </section>
   );
 };

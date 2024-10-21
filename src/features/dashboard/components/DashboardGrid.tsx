@@ -53,9 +53,9 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
   return (
     <section
       ref={scrollContainerRef}
-      className={`container mx-auto overflow-auto h-full px-6 pb-4 ${className}`}
+      className={`container mx-auto px-6 pb-4 ${className}`}
     >
-      <h1 className="sticky top-0 z-50 bg-zinc-950 text-4xl font-bold font-roboto-mono text-zinc-50 pb-4 pt-16">
+      <h1 className="sticky top-0 z-40 bg-zinc-950 text-4xl font-bold font-roboto-mono text-zinc-50 pb-4 pt-16">
         {remainingPokemons > 0
           ? `Select ${remainingPokemons} Pokémon to battle`
           : "You have selected 6 Pokémon"}
