@@ -79,6 +79,9 @@ const pokemonSlice = createSlice({
         setSearchTerm: (state, action: PayloadAction<string>) => {
             state.searchTerm = action.payload;
         },
+        clearSearchResults: (state) => {
+            state.searchResults = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -112,7 +115,7 @@ const pokemonSlice = createSlice({
     },
 });
 
-export const { addToCombat, removeFromCombat, removePartialPokemons, setSearchTerm } = pokemonSlice.actions;
+export const { addToCombat, removeFromCombat, removePartialPokemons, setSearchTerm, clearSearchResults } = pokemonSlice.actions;
 
 export const selectAllPokemons = (state: RootState) => state.pokemon.pokemons;
 export const selectCombatPokemons = (state: RootState) => state.pokemon.combatPokemons;

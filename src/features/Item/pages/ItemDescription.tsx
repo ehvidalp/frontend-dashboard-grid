@@ -24,7 +24,7 @@ const ItemDescription = () => {
       navigate("/");
     } else {
       setSelectedPokemon(pokemon);
-      setIsSelected(combatPokemons.some((p) => p.id === pokemon.id)); // Verificamos si está en combate
+      setIsSelected(combatPokemons.some((p) => p.id === pokemon.id)); 
     }
   }, [pokemon, navigate, combatPokemons]);
 
