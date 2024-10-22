@@ -25,7 +25,7 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
   } = usePokemonGrid();
 
   const pokemons = useAppSelector(selectFilteredPokemons);
-  const searchResults = useAppSelector(selectSearchResults); 
+  const searchResults = useAppSelector(selectSearchResults);
   const partialPokemons = useAppSelector(selectPartialPokemons);
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -72,9 +72,10 @@ const DashboardGrid: React.FC<DashboardGridProps> = ({ className }) => {
           ? `Select ${remainingPokemons} Pokémon to battle`
           : "You have selected 6 Pokémon"}
       </h1>
-      
-      <SquareSearch onSearchChange={handleSearch} className="sticky top-44 z-50 mb-4"/>
 
+      {/* <div className='sticky top-44 z-50 mb-4 bg-red-400 py-4'> */}
+        <SquareSearch onSearchChange={handleSearch} className='sticky top-44 z-50 mb-4 bg-zinc-950 py-4' />
+      {/* </div> */}
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {status === "loading" && <p>Loading...</p>}
         {status === "failed" && <p>Failed to load data</p>}

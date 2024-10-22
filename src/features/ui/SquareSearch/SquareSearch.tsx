@@ -18,7 +18,7 @@ const SquareSearch: FC<SquareSearchProps> = ({ onSearchChange, className }) => {
     <div className={`w-full ${className}`}>
       <input
         type="search"
-        className="w-full px-4 py-2 rounded-lg focus:outline-none bg-zinc-500 font-roboto-mono"
+        className="w-1/2 px-4 py-2 rounded-lg focus:outline-none bg-zinc-700 font-roboto-mono"
         placeholder="Search"
         value={search}
         onChange={handleSearchChange}
