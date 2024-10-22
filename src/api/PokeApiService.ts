@@ -29,7 +29,7 @@ class PokeApiService {
 
     async searchPokemon(name: string) {
         try {
-            const response = await this.apiPokeClient.get(`/pokemon/${name}`);
+            const response = await this.apiPokeClient.get(`/pokemon/${name.toLowerCase()}`);
             return response;
         } catch (error) {
             console.error(error);
