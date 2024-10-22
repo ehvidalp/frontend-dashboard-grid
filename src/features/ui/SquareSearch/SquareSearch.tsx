@@ -2,9 +2,10 @@ import { FC, useState } from 'react';
 
 interface SquareSearchProps {
   onSearchChange: (searchValue: string) => void;
+  className?: string;
 }
 
-const SquareSearch: FC<SquareSearchProps> = ({ onSearchChange }) => {
+const SquareSearch: FC<SquareSearchProps> = ({ onSearchChange, className }) => {
   const [search, setSearch] = useState('');
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +15,7 @@ const SquareSearch: FC<SquareSearchProps> = ({ onSearchChange }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${className}`}>
       <input
         type="search"
         className="w-full px-4 py-2 rounded-lg focus:outline-none bg-zinc-500 font-roboto-mono"

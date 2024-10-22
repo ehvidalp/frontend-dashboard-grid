@@ -31,7 +31,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <section className="grid grid-rows-[auto_1fr] relative grid-cols-[65%_35%]">
-      <DashboardGrid className="overflow-auto" />
+      <DashboardGrid />
       <DashboardItemsSelected className="overflow-hidden h-screen sticky top-0 " />
     </section>
   );
